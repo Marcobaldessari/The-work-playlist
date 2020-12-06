@@ -3,7 +3,10 @@ var track,
     playing,
     volumeNumber,
     trackNumber,
-    volumeSize = 3
+    volumeSize = 5,
+    album,
+    vynil,
+    cover
 
 var crackle = new Howl({
     src: ['tracks/crackle.mp3'],
@@ -30,24 +33,85 @@ var crackle = new Howl({
 
 
 var Albums = document.getElementsByClassName("album");
-for (var i = 0; i < Albums.length; i++) {
-    Albums.item(i).addEventListener("click", playPause);
+
+var Covers = document.getElementsByClassName("cover");
+for (var i = 0; i < Covers.length; i++) {
+    Covers.item(i).addEventListener("click", playPause);
 }
 
-function playPause() {
+var Vinyls = document.getElementsByClassName("vinyl");
+for (var i = 0; i < Vinyls.length; i++) {
+    Vinyls.item(i).addEventListener("click", next);
+}
 
-    this.classList.toggle("play")
+// 
+
+function playPause() {
+    album = this.parentNode
+    for (var i = 0; i < album.childNodes.length; i++) {
+        if (album.childNodes[i].className == "vinyl") {
+            vinyl = album.childNodes[i]
+            break;
+        }
+    }
+
+    album.classList.toggle("play")
     if (!playing) {
-        playMusic(this)
+        playMusic(album)
+        new TimelineLite().to(vinyl, .5, { left: "50%", ease:Back.easeOut.config(1.7) })
+
     } else if (playing) {
-        if (volumeNumber == this.getAttribute('volume')) {  // if user is interacting with the same album
+        if (volumeNumber == album.getAttribute('volume')) {  // if user is interacting with the same album
             stopMusic()
+            new TimelineLite().to(vinyl, .4, { left: "20%", ease: Power2.easeOut })
+
         } else {                // if user is playing another album
             stopMusic()
             Albums.item(volumeNumber - 1).classList.toggle("play")
-            playMusic(this)
+            playMusic(album)
         }
     }
+}
+
+function next() {
+    clearTimeout(trackDelay)
+    track.stop()
+    trackNumber = trackNumber + 1
+    if (trackNumber > volumeSize) { trackNumber = 1 }
+    track = new Howl({
+        src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
+        autoplay: false,
+        loop: false,
+        volume: .2,
+        onend: function () {
+            console.log('Finished! Next song loading..')
+            next()
+        }
+    });
+    playRandomCrackle()
+    track.play()
+
+
+    var animation = new TimelineLite()
+    animation.to(this, .1, { left: "40%", ease: Power1.easeOut })
+        .to(this, .4, { left: "50%", ease:Back.easeOut.config(1.7) })
+
+    // new TimelineLite()
+
+    // .set(this, {
+    //     left:"50%"
+    // }, 0)
+    // // animate position
+    // .to(this, 1, {
+    //     left:"10%",
+    // }, 0.4)
+    // .to(this, 1, {
+    //     left:"50%",
+    // }, 0.4)
+
+    // gsap.to(this, {left:"40%", duration: .2}).to(this, {left:"50%", duration: .2})
+    // this.classList.toggle("skipping")
+
 }
 
 function stopMusic() {
@@ -58,9 +122,11 @@ function stopMusic() {
 }
 
 function playMusic(album) {
+    playing = true
     crackle.volume(1)
-    crackle.play()
+    playRandomCrackle()
     volumeNumber = album.getAttribute('volume')
+    // console.log("volumeNumber: " + volumeNumber)
     trackNumber = getRandomInt(volumeSize)
     track = new Howl({
         src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
@@ -68,17 +134,26 @@ function playMusic(album) {
         loop: false,
         volume: .2,
         onend: function () {
-            console.log('Finished!');
+            console.log('Finished! Next song loading..')
+            next()
         }
     });
     trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
         track.play()
-    }, 3000);
-    playing = true
+    }, 3000)
+}
+
+function playRandomCrackle(){
+    crackle.play()
 }
 
 function getRandomInt(max) {                // random int between 1 and max included
-    return Math.floor(Math.random() * Math.floor(max) + 1);
+    return Math.floor(Math.random() * Math.floor(max) + 1)
+}
+
+allCTA = document.getElementsByClassName("CTAspotify")
+for (var i = 0; i < allCTA.length; i++) {
+    allCTA.item(i).addEventListener("click", function () {track.stop()});
 }
 
 const scroll = new LocomotiveScroll({       // Enable locomotive scroll
@@ -86,3 +161,4 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
     smooth: true,
     direction: "horizontal"
 });
+
