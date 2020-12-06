@@ -3,17 +3,40 @@ var track,
     playing,
     volumeNumber,
     trackNumber,
+    randomCrackle,
     volumeSize = 5,
     album,
     vynil,
     cover
+    
 
-var crackle = new Howl({
-    src: ['tracks/crackle.mp3'],
+var Crackles = new Array()    
+var crackle0 = new Howl({
+    src: ['tracks/crackle0.mp3'],
     autoplay: false,
     loop: false,
-    volume: .5,
-});
+    volume: 1,
+})
+Crackles.push(crackle0)
+
+var crackle1 = new Howl({
+    src: ['tracks/crackle1.mp3'],
+    autoplay: false,
+    loop: false,
+    volume: 1,
+})
+Crackles.push(crackle1)
+
+var crackle2 = new Howl({
+    src: ['tracks/crackle2.mp3'],
+    autoplay: false,
+    loop: false,
+    volume: 1,
+})
+Crackles.push(crackle2)
+
+
+
 
 // var scratch = new Howl({
 //     src: ['tracks/scratch1.mp3'],
@@ -31,6 +54,7 @@ var crackle = new Howl({
 //     }
 // });
 
+// document.getElementById('myImage').setAttribute('draggable', false);
 
 var Albums = document.getElementsByClassName("album");
 
@@ -73,10 +97,11 @@ function playPause() {
 
 function next() {
     var animation = new TimelineLite()
-    animation.to(this, .1, { x:-100, ease: Power1.easeOut })
-        .to(this, .4, { x: 0, ease:Back.easeOut.config(1.7) })
+    animation.to(this, .1, { x: -100, ease: Power1.easeOut })
+        .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
 
     clearTimeout(trackDelay)
+    Crackles[randomCrackle].stop()
     track.stop()
     trackNumber = trackNumber + 1
     if (trackNumber > volumeSize) { trackNumber = 1 }
@@ -95,8 +120,8 @@ function next() {
 
 
     var animation = new TimelineLite()
-    animation.to(this, .1, { x:-100, ease: Power1.easeOut })
-        .to(this, .4, { x: 0, ease:Back.easeOut.config(1.7) })
+    animation.to(this, .1, { x: -100, ease: Power1.easeOut })
+        .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
 
     // new TimelineLite()
 
@@ -118,14 +143,13 @@ function next() {
 
 function stopMusic() {
     clearTimeout(trackDelay)
-    crackle.stop()
+    Crackles[randomCrackle].stop()
     track.stop()
     playing = false
 }
 
 function playMusic(album) {
     playing = true
-    crackle.volume(1)
     playRandomCrackle()
     volumeNumber = album.getAttribute('volume')
     // console.log("volumeNumber: " + volumeNumber)
@@ -142,11 +166,13 @@ function playMusic(album) {
     });
     trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
         track.play()
-    }, 3000)
+    }, 1000)
 }
 
-function playRandomCrackle(){
-    crackle.play()
+function playRandomCrackle() {
+    // crackle.play()
+    randomCrackle = getRandomInt(3) - 1
+    Crackles[randomCrackle].play()
 }
 
 function getRandomInt(max) {                // random int between 1 and max included
@@ -156,7 +182,7 @@ function getRandomInt(max) {                // random int between 1 and max incl
 allCTA = document.getElementsByClassName("CTAspotify")
 for (var i = 0; i < allCTA.length; i++) {
     allCTA.item(i).addEventListener("click", function () {
-        
+
         track.stop()
         // Howler.stop()
         album.classList.toggle("play")
