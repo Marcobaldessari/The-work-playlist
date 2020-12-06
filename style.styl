@@ -43,15 +43,19 @@ body
     // width 50%
     left 50%
     transform translateX(-50%)
+    top 10%
 
 
 .album-list
+  position: absolute;
+  bottom: 100px;
   width 3200px
-  padding-top 400px
-  height 100%
+  // padding-top 400px
+  // height 100%
   +mobile()
     transform scale(.6,.6)
     margin-left -624px
+    bottom: 0px;
 
 .album
   position relative
@@ -225,6 +229,9 @@ body
   margin-top 100px
   margin-left 150px
   margin-right 50px
+  +mobile()
+    transform scale(1.2,1.2)
+
 
   h2
     font-size 40px
