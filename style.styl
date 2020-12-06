@@ -59,13 +59,16 @@ body
   text-align center
   width 594px
   height 403px
+  &.play
+    z-index 99
   // margin 200px auto
   transition: .2s cubic-bezier(0.25, 1, 0.5, 1);
   +desktop()
     margin-right -120px
     &.play
       transform translateX(-10%)
-      margin-right -80px
+      margin-right 0px
+      margin-left 40px
   +mobile()
     margin-right -120px
     &.play
@@ -143,17 +146,31 @@ body
 
   .vinyl
     position absolute
-    left 20%
+    left 120px
     top 5.2%
     width 353px
     height 358px
-    background: url("img/vinyl.png")
+    // background: url("img/vinyl.png")
     background-size: 353px 358px
-    animation: vinyl-rotate 10s linear infinite
-    animation-play-state: paused;
+    // animation-name: vinyl-rotate, vinyl-bump
+    transition .2s    // off animation 
+    img
+      width 353px
+      height 358px
+      animation vinyl-rotate 10s linear infinite
+      animation-play-state paused
+
+// 
+
   &.play
+    .vynil
+      img
+        animation-play-state running
+      
     .vinyl
-      animation-play-state: running;
+      transition .4s easeOutBack  // on animation
+      // animation-play-state running
+      left 300px
 
   .vinyl-shadow
     position absolute
@@ -259,4 +276,5 @@ body
     &:focus
       border-color #66637E
 
-    
+.album.play .vinyl img
+  animation-play-state running

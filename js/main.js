@@ -58,12 +58,10 @@ function playPause() {
     album.classList.toggle("play")
     if (!playing) {
         playMusic(album)
-        new TimelineLite().to(vinyl, .5, { left: "50%", ease:Back.easeOut.config(1.7) })
 
     } else if (playing) {
         if (volumeNumber == album.getAttribute('volume')) {  // if user is interacting with the same album
             stopMusic()
-            new TimelineLite().to(vinyl, .4, { left: "20%", ease: Power2.easeOut })
 
         } else {                // if user is playing another album
             stopMusic()
@@ -93,8 +91,8 @@ function next() {
 
 
     var animation = new TimelineLite()
-    animation.to(this, .1, { left: "40%", ease: Power1.easeOut })
-        .to(this, .4, { left: "50%", ease:Back.easeOut.config(1.7) })
+    animation.to(this, .1, { x:-100, ease: Power1.easeOut })
+        .to(this, .4, { x: 0, ease:Back.easeOut.config(1.7) })
 
     // new TimelineLite()
 
