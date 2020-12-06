@@ -75,7 +75,7 @@ function next() {
     var animation = new TimelineLite()
     animation.to(this, .1, { x:-100, ease: Power1.easeOut })
         .to(this, .4, { x: 0, ease:Back.easeOut.config(1.7) })
-        
+
     clearTimeout(trackDelay)
     track.stop()
     trackNumber = trackNumber + 1
@@ -84,7 +84,7 @@ function next() {
         src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
         autoplay: false,
         loop: false,
-        volume: .2,
+        volume: .6,
         onend: function () {
             console.log('Finished! Next song loading..')
             next()
@@ -134,7 +134,7 @@ function playMusic(album) {
         src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
         autoplay: false,
         loop: false,
-        volume: .2,
+        volume: .6,
         onend: function () {
             console.log('Finished! Next song loading..')
             next()
@@ -155,7 +155,12 @@ function getRandomInt(max) {                // random int between 1 and max incl
 
 allCTA = document.getElementsByClassName("CTAspotify")
 for (var i = 0; i < allCTA.length; i++) {
-    allCTA.item(i).addEventListener("click", function () {track.stop()});
+    allCTA.item(i).addEventListener("click", function () {
+        
+        track.stop()
+        // Howler.stop()
+        album.classList.toggle("play")
+    })
 }
 
 const scroll = new LocomotiveScroll({       // Enable locomotive scroll
