@@ -72,6 +72,10 @@ function playPause() {
 }
 
 function next() {
+    var animation = new TimelineLite()
+    animation.to(this, .1, { x:-100, ease: Power1.easeOut })
+        .to(this, .4, { x: 0, ease:Back.easeOut.config(1.7) })
+        
     clearTimeout(trackDelay)
     track.stop()
     trackNumber = trackNumber + 1
