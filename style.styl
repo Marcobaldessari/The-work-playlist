@@ -40,7 +40,6 @@ body
   background url("img/head@2x.png")
   background-size 292px 211px
   +mobile()
-    position absolute
     // width 50%
     left 50%
     transform translateX(-50%)
@@ -53,19 +52,21 @@ body
   opacity 0
   width 32px
   height 32px
-  z-index -1
+  z-index -2
   
 
 .album-list
   position: absolute;
-  bottom: 100px;
+  bottom: 15%;
+  // bottom: 100px;
   width 3200px
   // padding-top 400px
   // height 100%
+  z-index 1
   +mobile()
     transform scale(.6,.6)
     margin-left -624px
-    bottom: 0px;
+    bottom: 3%;
 
 .album
   position relative

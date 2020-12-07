@@ -10,7 +10,12 @@ var track,
     cover,
     noteTimeout,
     noteDelay,
-    n = 0
+    n = 0,
+    mobile
+
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    mobile = true
+}
 
 
 var Crackles = new Array()
@@ -170,48 +175,49 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 var speed = .2
 var tempo = 1 / speed
 function playNotes() {
+    if (!mobile) {
+        TweenMax.killTweensOf(Notes[n]);
 
-    TweenMax.killTweensOf(Notes[n]);
+        var pos = Albums[volumeNumber - 1].getBoundingClientRect()
+        var startX = pos.right + (100 * Math.random()) - 80
+        var startY = pos.top + (100 * Math.random()) - 40
+        var endX = startX
+        var endY = startY - 50 + (100 * Math.random()) - 80
 
-    var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-    var startX = pos.right + (100 * Math.random()) - 80
-    var startY = pos.top + (100 * Math.random()) - 40
-    var endX = startX
-    var endY = startY - 50 + (100 * Math.random()) - 80
+        new TimelineMax()
+            // show the image
+            .set(Notes[n], {
+                startAt: { opacity: 0, scale: 1 },
+                opacity: 1,
+                scale: 1,
+                rotation: 40 - 80 * Math.random(),
+                zIndex: 1,
+                x: startX,
+                y: startY
+            }, 0)
+            // animate position
+            .to(Notes[n], 1 * tempo, {
+                ease: Expo.easeOut,
+                // ease: "power1.inOut",
+                rotation: 40 - 80 * Math.random(),
+                x: endX,
+                y: endY
+            }, 0)
+            // then make it disappear 
+            .to(Notes[n], .5 * tempo, {
+                ease: Power1.easeOut,
+                opacity: 0
+            }, 0.4)
+            // scale down the image
+            .to(Notes[n], .5 * tempo, {
+                ease: Quint.easeOut,
+                scale: 0.2
+            }, 0.4);
 
-    new TimelineMax()
-        // show the image
-        .set(Notes[n], {
-            startAt: { opacity: 0, scale: 1 },
-            opacity: 1,
-            scale: 1,
-            rotation: 40 - 80 * Math.random(),
-            zIndex: 1,
-            x: startX,
-            y: startY
-        }, 0)
-        // animate position
-        .to(Notes[n], 1 * tempo, {
-            ease: Expo.easeOut,
-            // ease: "power1.inOut",
-            rotation: 40 - 80 * Math.random(),
-            x: endX,
-            y: endY
-        }, 0)
-        // then make it disappear 
-        .to(Notes[n], .5 * tempo, {
-            ease: Power1.easeOut,
-            opacity: 0
-        }, 0.4)
-        // scale down the image
-        .to(Notes[n], .5 * tempo, {
-            ease: Quint.easeOut,
-            scale: 0.2
-        }, 0.4);
-
-    noteTimeout = setTimeout(playNotes, 500)
-    n = n + 1
-    if (n >= Notes.length) { n = 0 }
+        noteTimeout = setTimeout(playNotes, 500)
+        n = n + 1
+        if (n >= Notes.length) { n = 0 }
+    }
 }
 
 
