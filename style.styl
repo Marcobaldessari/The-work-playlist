@@ -59,14 +59,14 @@ body
   position: absolute;
   bottom: 15%;
   // bottom: 100px;
-  width 3200px
+  width 3800px
   // padding-top 400px
   // height 100%
   z-index 1
   +mobile()
     transform scale(.6,.6)
     margin-left -624px
-    bottom: 3%;
+    bottom: 2%;
 
 .album
   position relative
@@ -115,12 +115,30 @@ body
       opacity 1
       transform scale(1.2, 1.2) translateY(-40px)
 
-  // .albumName
-  //   position absolute
-  //   display inline-block
-  //   top 430px
-  //   text-align center
-  //   left 50%
+
+  button.CTAspotify 
+    display inline-block
+    position relative
+    top 470px
+    text-align center
+    color white
+    background #000
+    font-size 16px
+    font-weight 700
+    border none
+    border-radius 50px
+    padding 8px 24px
+    opacity 0
+    transition .3s easeOutQuad
+    transform scale(1.2, 1.2) 
+    z-index 5
+    &:hover
+      // background-color #484848
+  &.play
+    button.CTAspotify 
+      transition-delay 2s
+      opacity 1
+      transform scale(1.2, 1.2) translateY(-40px)
 
   .cover-shadow
     left 0
