@@ -7,10 +7,13 @@ var track,
     volumeSize = 5,
     album,
     vynil,
-    cover
-    
+    cover,
+    noteTimeout,
+    noteDelay,
+    n = 0
 
-var Crackles = new Array()    
+
+var Crackles = new Array()
 var crackle0 = new Howl({
     src: ['tracks/crackle0.mp3'],
     autoplay: false,
@@ -36,39 +39,16 @@ var crackle2 = new Howl({
 Crackles.push(crackle2)
 
 
-
-
-// var scratch = new Howl({
-//     src: ['tracks/scratch1.mp3'],
-//     autoplay: false,
-//     loop: false,
-//     volume: .4,
-// });
-
-// var scratches = new Howl({
-//     src: ['tracks/50scratches.mp3'],
-//     autoplay: false,
-//     sprite: {
-//         jump1: [10120, 11300],
-//         jump2: [20800, 22600]
-//     }
-// });
-
-// document.getElementById('myImage').setAttribute('draggable', false);
-
-var Albums = document.getElementsByClassName("album");
-
-var Covers = document.getElementsByClassName("cover");
+var Albums = document.getElementsByClassName("album")
+var Covers = document.getElementsByClassName("cover")
 for (var i = 0; i < Covers.length; i++) {
-    Covers.item(i).addEventListener("click", playPause);
+    Covers.item(i).addEventListener("click", playPause)
 }
-
-var Vinyls = document.getElementsByClassName("vinyl");
+var Vinyls = document.getElementsByClassName("vinyl")
 for (var i = 0; i < Vinyls.length; i++) {
-    Vinyls.item(i).addEventListener("click", next);
+    Vinyls.item(i).addEventListener("click", next)
 }
-
-// 
+var Notes = document.getElementsByClassName("note")
 
 function playPause() {
     album = this.parentNode
@@ -81,15 +61,21 @@ function playPause() {
 
     album.classList.toggle("play")
     if (!playing) {
+        volumeNumber = album.getAttribute('volume')
         playMusic(album)
+        playNotes()
 
     } else if (playing) {
         if (volumeNumber == album.getAttribute('volume')) {  // if user is interacting with the same album
+            clearTimeout(noteTimeout)
             stopMusic()
 
         } else {                // if user is playing another album
             stopMusic()
+
             Albums.item(volumeNumber - 1).classList.toggle("play")
+            volumeNumber = album.getAttribute('volume')
+
             playMusic(album)
         }
     }
@@ -122,18 +108,10 @@ function next() {
     animation.to(this, .1, { x: -100, ease: Power1.easeOut })
         .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
 }
-function stopMusic() {
-    clearTimeout(trackDelay)
-    Crackles[randomCrackle].stop()
-    track.stop()
-    playing = false
-}
 
 function playMusic(album) {
     playing = true
     playRandomCrackle()
-    volumeNumber = album.getAttribute('volume')
-    // console.log("volumeNumber: " + volumeNumber)
     trackNumber = getRandomInt(volumeSize)
     track = new Howl({
         src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
@@ -148,10 +126,17 @@ function playMusic(album) {
     trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
         track.play()
     }, 1000)
+    // track.on("play",playNotes)
+}
+
+function stopMusic() {
+    clearTimeout(trackDelay)
+    Crackles[randomCrackle].stop()
+    track.stop()
+    playing = false
 }
 
 function playRandomCrackle() {
-    // crackle.play()
     randomCrackle = getRandomInt(3) - 1
     Crackles[randomCrackle].play()
 }
@@ -163,9 +148,7 @@ function getRandomInt(max) {                // random int between 1 and max incl
 allCTA = document.getElementsByClassName("CTAspotify")
 for (var i = 0; i < allCTA.length; i++) {
     allCTA.item(i).addEventListener("click", function () {
-
         track.stop()
-        // Howler.stop()
         album.classList.toggle("play")
     })
 }
@@ -179,8 +162,62 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 
 
 
+// --------------------------------
+// NOTE ANIMATION
+// --------------------------------
 
 
+var speed = .2
+var tempo = 1 / speed
+function playNotes() {
+
+    TweenMax.killTweensOf(Notes[n]);
+
+    var pos = Albums[volumeNumber - 1].getBoundingClientRect()
+    var startX = pos.right + (100 * Math.random()) - 80
+    var startY = pos.top + (100 * Math.random()) - 40
+    var endX = startX
+    var endY = startY - 50 + (100 * Math.random()) - 80
+
+    new TimelineMax()
+        // show the image
+        .set(Notes[n], {
+            startAt: { opacity: 0, scale: 1 },
+            opacity: 1,
+            scale: 1,
+            rotation: 40 - 80 * Math.random(),
+            zIndex: 1,
+            x: startX,
+            y: startY
+        }, 0)
+        // animate position
+        .to(Notes[n], 1 * tempo, {
+            ease: Expo.easeOut,
+            // ease: "power1.inOut",
+            rotation: 40 - 80 * Math.random(),
+            x: endX,
+            y: endY
+        }, 0)
+        // then make it disappear 
+        .to(Notes[n], .5 * tempo, {
+            ease: Power1.easeOut,
+            opacity: 0
+        }, 0.4)
+        // scale down the image
+        .to(Notes[n], .5 * tempo, {
+            ease: Quint.easeOut,
+            scale: 0.2
+        }, 0.4);
+
+    noteTimeout = setTimeout(playNotes, 500)
+    n = n + 1
+    if (n >= Notes.length) { n = 0 }
+}
+
+
+// --------------------------------
+// MOBILE KEYBOARD DETECTOR
+// --------------------------------
 
 
 // var logo = document.getElementById("logo");
@@ -253,227 +290,3 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 // });
 
 
-
-// --------------------------------
-// NOTE ANIMATOR
-// --------------------------------
-
-{
-    // body element
-    const body = document.body;
-    let hover = false;
-
-    // helper functions
-    const MathUtils = {
-        // linear interpolation
-        lerp: (a, b, n) => (1 - n) * a + n * b,
-        // distance between two points
-        distance: (x1,y1,x2,y2) => Math.hypot(x2-x1, y2-y1)
-    }
-
-    // get the mouse position
-    const getMousePos = (ev) => {
-        let posx = 0;
-        let posy = 0;
-        if (!ev) ev = window.event;
-        if (ev.pageX || ev.pageY) {
-            posx = ev.pageX;
-            posy = ev.pageY;
-        }
-        else if (ev.clientX || ev.clientY) 	{
-            posx = ev.clientX + body.scrollLeft + docEl.scrollLeft;
-            posy = ev.clientY + body.scrollTop + docEl.scrollTop;
-        }
-        return {x: posx, y: posy};
-    }
-
-    // mousePos: current mouse position
-    // cacheMousePos: previous mouse position
-    // lastMousePos: last last recorded mouse position (at the time the last image was shown)
-    let mousePos = lastMousePos = cacheMousePos = {x: 0, y: 0};
-    
-    // update the mouse position
-    window.addEventListener('mousemove', ev => mousePos = getMousePos(ev));
-    var folioItems = document.getElementsByClassName('album');
-    for (var i = 0; i < folioItems.length; i++) {
-        folioItems[i].addEventListener('mouseover',  function () {hover = true}, false);
-        folioItems[i].addEventListener('mouseout',  function () {hover = false}, false);
-    }
-   
-    // document.getElementsByClassName('item').addEventListener("mouseover", function(){
-    //     // this.style.color = "red";
-    //     console.log("trıgger")
-    // });
-    // gets the distance from the current mouse position to the last recorded mouse position
-    const getMouseDistance = () => MathUtils.distance(mousePos.x,mousePos.y,lastMousePos.x,lastMousePos.y);
-
-    class Image {
-        constructor(el) {
-            this.DOM = {el: el};
-            // image deafult styles
-            this.defaultStyle = {
-                scale: 1,
-                x: 0,
-                y: 0,
-                opacity: 0
-            };
-            // get sizes/position
-            this.getRect();
-            // init/bind events
-            this.initEvents();
-        }
-        initEvents() {
-            // on resize get updated sizes/position
-            window.addEventListener('resize', () => this.resize());
-        }
-        resize() {
-            // reset styles
-            TweenMax.set(this.DOM.el, this.defaultStyle);
-            // get sizes/position
-            this.getRect();
-        }
-        getRect() {
-            this.rect = this.DOM.el.getBoundingClientRect();
-        }
-        isActive() {
-            // check if image is animating or if it's visible
-            return TweenMax.isTweening(this.DOM.el) || this.DOM.el.style.opacity != 0;
-        }
-    }
-
-    class ImageTrail {
-        constructor() {
-            // images container
-            this.DOM = {content: document.querySelector('.content')};
-            // array of Image objs, one per image element
-            this.images = [];
-            [...this.DOM.content.querySelectorAll('img')].forEach(img => this.images.push(new Image(img)));
-            // total number of images
-            this.imagesTotal = this.images.length;
-            // upcoming image index
-            this.imgPosition = 0;
-            // zIndex value to apply to the upcoming image
-            this.zIndexVal = 1;
-            // mouse distance required to show the next image
-            this.threshold = 70;
-            // render the images
-            requestAnimationFrame(() => this.render());
-        }
-        render() {
-            // get distance between the current mouse position and the position of the previous image
-            let distance = getMouseDistance();
-            // cache previous mouse position
-            cacheMousePos.x = MathUtils.lerp(cacheMousePos.x || mousePos.x, mousePos.x, 0.1);
-            cacheMousePos.y = MathUtils.lerp(cacheMousePos.y || mousePos.y, mousePos.y, 0.1);
-
-            // if the mouse moved more than [this.threshold] then show the next image
-            if ( distance > this.threshold && hover == true) {
-                this.showNextImage();
-
-                ++this.zIndexVal;
-                this.imgPosition = this.imgPosition < this.imagesTotal-1 ? this.imgPosition+1 : 0;
-                
-                lastMousePos = mousePos;
-            }
-
-            // check when mousemove stops and all images are inactive (not visible and not animating)
-            let isIdle = true;
-            for (let img of this.images) {
-                if ( img.isActive() ) {
-                    isIdle = false;
-                    break;
-                }
-            }
-            // reset z-index initial value
-            if ( isIdle && this.zIndexVal !== 1 ) {
-                this.zIndexVal = 1;
-            }
-
-            // loop..
-            requestAnimationFrame(() => this.render());
-        }
-        showNextImage() {
-            
-            console.log("showNextImage is triggered")
-
-            // show image at position [this.imgPosition]
-            const img = this.images[this.imgPosition];
-            // kill any tween on the image
-            TweenMax.killTweensOf(img.DOM.el);
-
-            // new TimelineMax()
-            // // show the image
-            // .set(img.DOM.el, {
-            //     startAt: {opacity: 0, scale: 1},
-            //     opacity: 1,
-            //     scale: 1,
-            //     zIndex: this.zIndexVal,
-            //     x: cacheMousePos.x - img.rect.width/2,
-            //     y: cacheMousePos.y - img.rect.height/2
-            // }, 0)
-            // // animate position
-            // .to(img.DOM.el, 0.9, {
-            //     ease: Expo.easeOut,
-            //     x: mousePos.x - img.rect.width/2,
-            //     y: mousePos.y - img.rect.height/2
-            // }, 0)
-            // // then make it disappear
-            // .to(img.DOM.el, 1, {
-            //     ease: Power1.easeOut,
-            //     opacity: 0
-            // }, 0.4)
-            // // scale down the image
-            // .to(img.DOM.el, 1, {
-            //     ease: Quint.easeOut,
-            //     scale: 0.2
-            // }, 0.4);
-
-            new TimelineMax()
-            // show the image
-            .set(img.DOM.el, {
-                startAt: {opacity: 0, scale: 1},
-                opacity: 1,
-                scale: 1,
-                rotation: 40 - 80 * Math.random(),
-                zIndex: this.zIndexVal,
-                x: mousePos.x - img.rect.width/2,
-                y: mousePos.y - img.rect.height/2 - 80
-            }, 0)
-            // animate position
-            .to(img.DOM.el, 1, {
-                ease: Expo.easeOut,
-                // ease: "power1.inOut",
-                rotation: 40 - 80 * Math.random(),
-                x: mousePos.x - img.rect.width/2,
-                y: mousePos.y - img.rect.height/2 - 150 + (100 * Math.random()) - 80
-            }, 0)
-            // then make it disappear
-            .to(img.DOM.el, .5, {
-                ease: Power1.easeOut,
-                opacity: 0
-            }, 0.4)
-            // scale down the image
-            .to(img.DOM.el, .5, {
-                ease: Quint.easeOut,
-                scale: 0.2
-            }, 0.4);
-        }
-    }
-
-    /***********************************/
-    /********** Preload stuff **********/
-
-    // Preload images
-    const preloadImages = () => {
-        return new Promise((resolve, reject) => {
-            imagesLoaded(document.querySelectorAll('.content__img'), resolve);
-        });
-    };
-    
-    // And then..
-    preloadImages().then(() => {
-        // Remove the loader
-        document.body.classList.remove('loading');
-        new ImageTrail();
-    });
-}
