@@ -11,7 +11,8 @@ var track,
     noteTimeout,
     noteDelay,
     n = 0,
-    mobile
+    mobile,
+    mute
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true
@@ -80,7 +81,7 @@ function playPause() {
 
             Albums.item(volumeNumber - 1).classList.toggle("play")
             volumeNumber = album.getAttribute('volume')
-
+            playNotes()
             playMusic(album)
         }
     }
@@ -106,9 +107,11 @@ function next() {
             next()
         }
     });
-    playRandomCrackle()
-    track.play()
-
+    if (!mute) {
+        playRandomCrackle()
+        track.play()
+    }
+    playNotes()
     var animation = new TimelineLite()
     animation.to(this, .1, { x: -100, ease: Power1.easeOut })
         .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
@@ -128,10 +131,11 @@ function playMusic(album) {
             next()
         }
     });
-    trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
-        track.play()
-    }, 1000)
-    // track.on("play",playNotes)
+    if (!mute) {
+        trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
+            track.play()
+        }, 1000)
+    }
 }
 
 function stopMusic() {
@@ -168,21 +172,20 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 
 
 // --------------------------------
-// NOTE ANIMATION
+// PLAY 1 NOTE A
 // --------------------------------
 
 
 var speed = .2
-var tempo = 1 / speed
 function playNotes() {
     if (!mobile) {
         TweenMax.killTweensOf(Notes[n]);
 
         var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-        var startX = pos.right + (100 * Math.random()) - 80
-        var startY = pos.top + (100 * Math.random()) - 40
-        var endX = startX
-        var endY = startY - 50 + (100 * Math.random()) - 80
+        var startX = pos.right + (10 * Math.random()) -120
+        var startY = pos.top 
+        var endX = startX + (50 * Math.random())
+        var endY = startY + (200 * Math.random()) - 200
 
         new TimelineMax()
             // show the image
@@ -196,29 +199,94 @@ function playNotes() {
                 y: startY
             }, 0)
             // animate position
-            .to(Notes[n], 1 * tempo, {
+            .to(Notes[n], 2, {
                 ease: Expo.easeOut,
                 // ease: "power1.inOut",
-                rotation: 40 - 80 * Math.random(),
+                rotation: 60 - 120 * Math.random(),
                 x: endX,
                 y: endY
             }, 0)
             // then make it disappear 
-            .to(Notes[n], .5 * tempo, {
+            .to(Notes[n], .5, {
                 ease: Power1.easeOut,
                 opacity: 0
-            }, 0.4)
+            }, 1)
             // scale down the image
-            .to(Notes[n], .5 * tempo, {
+            .to(Notes[n], .5, {
                 ease: Quint.easeOut,
                 scale: 0.2
-            }, 0.4);
+            }, 1);
 
-        noteTimeout = setTimeout(playNotes, 500)
+        // noteTimeout = setTimeout(playNotes, 500)
         n = n + 1
         if (n >= Notes.length) { n = 0 }
     }
 }
+
+// --------------------------------
+// M to Mute
+// --------------------------------
+
+document.addEventListener('keydown', logKey);
+
+function logKey(e) {
+    if (e.isComposing || e.keyCode === 77) {
+        mute ^= true;
+        return;
+    }
+}
+
+
+// --------------------------------
+// PLAY MANY NOTES
+// --------------------------------
+
+
+// function playNotes() {
+//     if (!mobile) {
+//         TweenMax.killTweensOf(Notes[n]);
+
+//         var pos = Albums[volumeNumber - 1].getBoundingClientRect()
+//         var startX = pos.right + (100 * Math.random()) - 80
+//         var startY = pos.top + (100 * Math.random()) - 40
+//         var endX = startX
+//         var endY = startY - 50 + (100 * Math.random()) - 80
+
+//         new TimelineMax()
+//             // show the image
+//             .set(Notes[n], {
+//                 startAt: { opacity: 0, scale: 1 },
+//                 opacity: 1,
+//                 scale: 1,
+//                 rotation: 40 - 80 * Math.random(),
+//                 zIndex: 1,
+//                 x: startX,
+//                 y: startY
+//             }, 0)
+//             // animate position
+//             .to(Notes[n], 1 * tempo, {
+//                 ease: Expo.easeOut,
+//                 // ease: "power1.inOut",
+//                 rotation: 40 - 80 * Math.random(),
+//                 x: endX,
+//                 y: endY
+//             }, 0)
+//             // then make it disappear 
+//             .to(Notes[n], .5 * tempo, {
+//                 ease: Power1.easeOut,
+//                 opacity: 0
+//             }, 0.4)
+//             // scale down the image
+//             .to(Notes[n], .5 * tempo, {
+//                 ease: Quint.easeOut,
+//                 scale: 0.2
+//             }, 0.4);
+
+//         noteTimeout = setTimeout(playNotes, 500)
+//         n = n + 1
+//         if (n >= Notes.length) { n = 0 }
+//     }
+// }
 
 
 // --------------------------------
