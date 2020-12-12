@@ -56,6 +56,9 @@ for (var i = 0; i < Vinyls.length; i++) {
 }
 var Notes = document.getElementsByClassName("note")
 
+var subscribeButton = document.getElementById("mc-embedded-subscribe")
+subscribeButton.addEventListener("click", eventSubscribed)
+
 function playPause() {
     album = this.parentNode
     for (var i = 0; i < album.childNodes.length; i++) {
@@ -132,6 +135,7 @@ function playMusic(album) {
         }
     });
     if (!mute) {
+        eventSongPLayed()
         trackDelay = setTimeout(function () {   // start the track 3s after crackle sound
             track.play()
         }, 1000)
@@ -182,8 +186,8 @@ function playNotes() {
         TweenMax.killTweensOf(Notes[n]);
 
         var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-        var startX = pos.right + (10 * Math.random()) -120
-        var startY = pos.top 
+        var startX = pos.right + (10 * Math.random()) - 120
+        var startY = pos.top
         var endX = startX + (50 * Math.random())
         var endY = startY + (200 * Math.random()) - 200
 
@@ -236,58 +240,13 @@ function logKey(e) {
     }
 }
 
+function eventSongPLayed() {
+    gtag('event', 'play');
+}
 
-// --------------------------------
-// PLAY MANY NOTES
-// --------------------------------
-
-
-// function playNotes() {
-//     if (!mobile) {
-//         TweenMax.killTweensOf(Notes[n]);
-
-//         var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-//         var startX = pos.right + (100 * Math.random()) - 80
-//         var startY = pos.top + (100 * Math.random()) - 40
-//         var endX = startX
-//         var endY = startY - 50 + (100 * Math.random()) - 80
-
-//         new TimelineMax()
-//             // show the image
-//             .set(Notes[n], {
-//                 startAt: { opacity: 0, scale: 1 },
-//                 opacity: 1,
-//                 scale: 1,
-//                 rotation: 40 - 80 * Math.random(),
-//                 zIndex: 1,
-//                 x: startX,
-//                 y: startY
-//             }, 0)
-//             // animate position
-//             .to(Notes[n], 1 * tempo, {
-//                 ease: Expo.easeOut,
-//                 // ease: "power1.inOut",
-//                 rotation: 40 - 80 * Math.random(),
-//                 x: endX,
-//                 y: endY
-//             }, 0)
-//             // then make it disappear 
-//             .to(Notes[n], .5 * tempo, {
-//                 ease: Power1.easeOut,
-//                 opacity: 0
-//             }, 0.4)
-//             // scale down the image
-//             .to(Notes[n], .5 * tempo, {
-//                 ease: Quint.easeOut,
-//                 scale: 0.2
-//             }, 0.4);
-
-//         noteTimeout = setTimeout(playNotes, 500)
-//         n = n + 1
-//         if (n >= Notes.length) { n = 0 }
-//     }
-// }
-
+function eventSubscribed() {
+    gtag('event', 'subscribed');
+}
 
 // --------------------------------
 // MOBILE KEYBOARD DETECTOR
