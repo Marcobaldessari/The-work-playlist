@@ -21,7 +21,7 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
 var Crackles = new Array()
 var crackle0 = new Howl({
-    src: ['tracks/crackle0.mp3'],
+    src: ['http://mixtapes.work.s3.eu-central-1.amazonaws.com/tracks/crackle0.mp3'],
     autoplay: false,
     loop: false,
     volume: 1,
@@ -29,7 +29,7 @@ var crackle0 = new Howl({
 Crackles.push(crackle0)
 
 var crackle1 = new Howl({
-    src: ['tracks/crackle1.mp3'],
+    src: ['http://mixtapes.work.s3.eu-central-1.amazonaws.com/tracks/crackle1.mp3'],
     autoplay: false,
     loop: false,
     volume: 1,
@@ -37,7 +37,7 @@ var crackle1 = new Howl({
 Crackles.push(crackle1)
 
 var crackle2 = new Howl({
-    src: ['tracks/crackle2.mp3'],
+    src: ['http://mixtapes.work.s3.eu-central-1.amazonaws.com/tracks/crackle2.mp3'],
     autoplay: false,
     loop: false,
     volume: 1,
@@ -122,7 +122,7 @@ function playMusic(album) {
     playRandomCrackle()
     trackNumber = getRandomInt(volumeSize)
     track = new Howl({
-        src: ['tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
+        src: ['http://mixtapes.work.s3.eu-central-1.amazonaws.com/tracks/volume' + volumeNumber + '/' + trackNumber + '.mp3'],
         autoplay: false,
         loop: false,
         volume: .6,
