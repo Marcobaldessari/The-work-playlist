@@ -59,6 +59,11 @@ var Notes = document.getElementsByClassName("note")
 var subscribeButton = document.getElementById("mc-embedded-subscribe")
 subscribeButton.addEventListener("click", eventSubscribed)
 
+var spotifyCTAs = document.getElementsByClassName("CTAspotify")
+for (var i = 0; i < spotifyCTAs.length; i++) {
+    spotifyCTAs.item(i).addEventListener("click", eventOpenSpotify)
+}
+
 function playPause() {
     album = this.parentNode
     for (var i = 0; i < album.childNodes.length; i++) {
@@ -241,11 +246,15 @@ function logKey(e) {
 }
 
 function eventSongPLayed() {
-    gtag('event', 'play');
+    gtag('event', 'custom_playMusic');
 }
 
 function eventSubscribed() {
-    gtag('event', 'subscribed');
+    gtag('event', 'custom_subscribed');
+}
+
+function eventOpenSpotify() {
+    gtag('event', 'custom_opened_Spotify');
 }
 
 // --------------------------------
