@@ -61,7 +61,7 @@ subscribeButton.addEventListener("click", eventSubscribed)
 
 var spotifyCTAs = document.getElementsByClassName("CTAspotify")
 for (var i = 0; i < spotifyCTAs.length; i++) {
-    spotifyCTAs.item(i).addEventListener("click", eventOpenSpotify)
+    Covers.item(i).addEventListener("click", eventOpenSpotify)
 }
 
 function playPause() {
