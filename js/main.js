@@ -166,8 +166,8 @@ function getRandomInt(max) {                // random int between 1 and max incl
 allCTA = document.getElementsByClassName("CTAspotify")
 for (var i = 0; i < allCTA.length; i++) {
     allCTA.item(i).addEventListener("click", function () {
-        track.stop()
-        album.classList.toggle("play")
+        // track.stop()
+        // album.classList.toggle("play")
     })
 }
 
