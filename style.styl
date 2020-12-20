@@ -200,6 +200,21 @@ body
     cursor: pointer;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+
+    &::after
+      display block
+      position absolute
+      content "NEXT"
+      top 170px
+      right 40px
+      color rgba(255, 255, 255, .8)
+      font-size 18px
+      font-weight 700
+      animation pulse 6s ease-out alternate infinite
+    &.nonext
+      &::after
+        display none
+
     .vinyl-img
       width 353px
       height 358px
@@ -241,6 +256,12 @@ body
 @keyframes vinyl-rotate {
   0% {transform: rotate(0deg)}
   100% {transform: rotate(360deg)}
+}
+
+@keyframes pulse {
+  0% {opacity: 1}
+  50% {opacity: 0}
+  100% {opacity: 1}
 }
 
 

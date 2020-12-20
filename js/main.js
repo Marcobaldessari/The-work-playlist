@@ -12,7 +12,8 @@ var track,
     noteDelay,
     n = 0,
     mobile,
-    mute
+    mute,
+    nonext = false
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true
@@ -96,6 +97,13 @@ function playPause() {
 }
 
 function next() {
+    if(!nonext)
+    {
+        nonext = true
+        for (var i = 0; i < Vinyls.length; i++) {
+            Vinyls.item(i).classList.add("nonext");
+        }
+    }
     var animation = new TimelineLite()
     animation.to(this, .1, { x: -100, ease: Power1.easeOut })
         .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
