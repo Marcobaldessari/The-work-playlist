@@ -313,7 +313,6 @@ body
 
 
   .email
-    
     font-size 18px
     line-height 0%
     height 52px
@@ -329,6 +328,69 @@ body
     &:focus
       border-color #66637E
 
+  .contribute 
+    color #666
+    font-size 18px
+    display inline-block
+    a
+      color #F20001
+
 .album.play .vinyl img
   animation-play-state running
 
+
+
+/* The Modal (background) */
+.modal 
+  display none
+  position fixed
+  z-index 1
+  left 0
+  top 0
+  width 100% 
+  height 100%
+  overflow auto
+  background-color rgb(0,0,0)
+  background-color rgba(0,0,0,0.7)
+
+.modal-content 
+  position relative
+  font-size 20px
+  background-color #fefefe
+  margin 15% auto 
+  padding 40px
+  border 1px solid #888
+  width 40% 
+  border-radius 20px
+  text-align center
+
+  +mobile()
+    width 100%
+    position absolute
+    bottom 0
+    margin-bottom 0
+    border-radius 20px 20px 0 0
+    padding 40px 24px
+    paragraph-height 16px
+    
+  p
+    margin-top 16px
+  a
+    color #F20001
+  h3
+    font-size 40px
+    
+
+.close 
+  position absolute
+  right 12px
+  top -3px
+  color #aaa
+  font-size 38px
+  font-weight bold
+
+.close:hover,
+.close:focus 
+  color black
+  text-decoration none
+  cursor pointer
