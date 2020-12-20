@@ -254,7 +254,7 @@ function eventSubscribed() {
 }
 
 function eventOpenSpotify() {
-    gtag('event', 'custom_opened_Spotify');
+    gtag('event', 'custom_opened_Spotify_new');
 }
 
 // --------------------------------
