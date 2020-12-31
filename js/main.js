@@ -78,7 +78,7 @@ function playPause() {
     if (!playing) {
         volumeNumber = album.getAttribute('volume')
         playMusic(album)
-        playNotes()
+        floatingNoteAnimation()
 
     } else if (playing) {
         if (volumeNumber == album.getAttribute('volume')) {  // if user is interacting with the same album
@@ -90,7 +90,7 @@ function playPause() {
 
             Albums.item(volumeNumber - 1).classList.toggle("play")
             volumeNumber = album.getAttribute('volume')
-            playNotes()
+            floatingNoteAnimation()
             playMusic(album)
         }
     }
@@ -127,7 +127,7 @@ function next() {
         playRandomCrackle()
         track.play()
     }
-    playNotes()
+    floatingNoteAnimation()
     var animation = new TimelineLite()
     animation.to(this, .1, { x: -100, ease: Power1.easeOut })
         .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
@@ -189,12 +189,11 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 
 
 // --------------------------------
-// PLAY 1 NOTE A
+// floating note animation
 // --------------------------------
 
-
 var speed = .2
-function playNotes() {
+function floatingNoteAnimation() {
     if (!mobile) {
         TweenMax.killTweensOf(Notes[n]);
 
@@ -234,14 +233,14 @@ function playNotes() {
                 scale: 0.2
             }, 1);
 
-        // noteTimeout = setTimeout(playNotes, 500)
+        // noteTimeout = setTimeout(floatingNoteAnimation, 500)
         n = n + 1
         if (n >= Notes.length) { n = 0 }
     }
 }
 
 // --------------------------------
-// M to Mute
+// press "m" to Mute
 // --------------------------------
 
 document.addEventListener('keydown', logKey);
@@ -266,7 +265,7 @@ function eventOpenSpotify() {
 }
 
 // --------------------------------
-// Modal
+// Modal -- Learn more
 // --------------------------------
 
 // Get the modal
@@ -298,77 +297,19 @@ window.onclick = function(event) {
 
 
 // --------------------------------
-// MOBILE KEYBOARD DETECTOR
+// Hide logo when keyboard is open
 // --------------------------------
 
+const logo = document.getElementById("logo");
+const emailField = document.querySelector('input[type="email"]');
 
-// var logo = document.getElementById("logo");
-// function onKeyboardOnOff(isOpen) {
-//     if (isOpen) {
-//         var logo = document.getElementById("logo");
-//     } else {
-//         // keyboard is closed
-//     }
-// }
+emailField.addEventListener('focus', (event) => {
+  logo.classList.add("outofsight");
+});
 
-// var originalPotion = false;
-// $(document).ready(function(){
-//     if (originalPotion === false) originalPotion = $(window).width() + $(window).height();
-// });
+emailField.addEventListener('blur', (event) => {
+  logo.classList.remove("outofsight");
+});
 
-// /**
-//  * Determine the mobile operating system.
-//  * This function returns one of 'iOS', 'Android', 'Windows Phone', or 'unknown'.
-//  *
-//  * @returns {String}
-//  */
-// function getMobileOperatingSystem() {
-//     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-//       // Windows Phone must come first because its UA also contains "Android"
-//     if (/windows phone/i.test(userAgent)) {
-//         return "winphone";
-//     }
-
-//     if (/android/i.test(userAgent)) {
-//         return "android";
-//     }
-
-//     // iOS detection from: http://stackoverflow.com/a/9039885/177710
-//     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-//         return "ios";
-//     }
-
-//     return "";
-// }
-
-// function applyAfterResize() {
-
-//     if (getMobileOperatingSystem() != 'ios') {
-//         if (originalPotion !== false) {
-//             var wasWithKeyboard = $('body').hasClass('view-withKeyboard');
-//             var nowWithKeyboard = false;
-
-//                 var diff = Math.abs(originalPotion - ($(window).width() + $(window).height()));
-//                 if (diff > 100) nowWithKeyboard = true;
-
-//             $('body').toggleClass('view-withKeyboard', nowWithKeyboard);
-//             if (wasWithKeyboard != nowWithKeyboard) {
-//                 onKeyboardOnOff(nowWithKeyboard);
-//             }
-//         }
-//     }
-// }
-
-// $(document).on('focus blur', 'select, textarea, input[type=text], input[type=date], input[type=password], input[type=email], input[type=number]', function(e){
-//     var $obj = $(this);
-//     var nowWithKeyboard = (e.type == 'focusin');
-//     $('body').toggleClass('view-withKeyboard', nowWithKeyboard);
-//     onKeyboardOnOff(nowWithKeyboard);
-// });
-
-// $(window).on('resize orientationchange', function(){
-//     applyAfterResize();
-// });
 
 

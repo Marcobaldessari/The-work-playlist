@@ -19,9 +19,12 @@ easeOutQuad = cubic-bezier(0.5, 1, 0.89, 1)
   
 *,
 *::after,
-*::before {
-	box-sizing: border-box;
-}
+*::before 
+	box-sizing border-box
+
+
+
+  
 
 html, 
 body 
@@ -39,13 +42,16 @@ body
   height 211px
   background url("img/head@2x.png")
   background-size 292px 211px
+  transition .3s easeOutQuad
+  
   +mobile()
     // width 50%
     left 50%
     transform translateX(-50%) scale(.8)
     top 3%
-  .logo.openKeyboard
-    opacity 0
+    &.outofsight 
+      opacity 0
+      top 0%  
 
 .note
   position absolute
