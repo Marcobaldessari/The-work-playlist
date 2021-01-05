@@ -97,6 +97,7 @@ function playPause() {
 }
 
 function next() {
+    if (!playing) return
     if(!nonext)
     {
         nonext = true

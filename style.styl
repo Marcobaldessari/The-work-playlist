@@ -5,11 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap');
 
 desktop()
-    @media (min-width: 480px)
-        {block}
+  @media (min-width: 480px)
+      {block}
 mobile()
-    @media (max-width: 479px)
-        {block}
+  @media (max-width: 479px)
+    {block}
 
 easeOutBack = cubic-bezier(0.34, 1.56, 0.64, 1)
 easeOutQuad = cubic-bezier(0.5, 1, 0.89, 1)
@@ -36,6 +36,7 @@ body
   height 100%
   background-color white
   font-family: 'Padauk', sans-serif;
+  overflow-x hidden
 
 .logo
   display block
@@ -49,13 +50,14 @@ body
   transition .3s easeOutQuad
   
   +mobile()
-    // width 50%
+    position relative
     left 50%
     transform translateX(-50%) scale(.8)
     top 3%
     &.outofsight 
       opacity 0
       top 0%  
+    
 
 .note
   position absolute
@@ -67,35 +69,33 @@ body
 
 .album-list
   position: absolute;
-  // bottom: 100px;
   width 3600px
   height 100%
-  // padding-top 400px
-  // height 100%
   z-index 1
   +mobile()
-    transform scale(.6,.6)
-    margin-left -724px
-    bottom: 2%;
+    position relative
+    width 100%
+    text-align center
 
 .container-test
   position absolute
   bottom: 9%;
   width 4200px
   +mobile()
-    bottom -20%
+    position relative
+    width 100%
+    top 0
 
 .album
-  
   position relative
   display inline-block
-  text-align center
-  width 594px
-  height 403px
+  width 600px
+  height 400px
   &.play
     z-index 99
   // margin 200px auto
-  transition: .2s cubic-bezier(0.25, 1, 0.5, 1);
+  // transition: .2s linear;
+  transition: .4s cubic-bezier(0.25, 1, 0.5, 1);
   +desktop()
     margin-right -120px
     &.play
@@ -103,11 +103,10 @@ body
       margin-right 0px
       margin-left 40px
   +mobile()
-    margin-right -120px
-    &.play
-      transform translateX(-10%)
-      margin-right -10px
-
+    display block
+    width 100%
+    // transform scale(.8, .8)
+    // width 100px
 
   a.CTAspotify 
     text-decoration none
@@ -146,14 +145,9 @@ body
     opacity 1
 
   .cover-shadow
-    left 0
     position absolute
-    display inline-block
-    width 594px
-    height 403px
-    background: url("img/cover-shadow.png")
-    background-size: 594px 403px
-    // z-index 5     // in front of album cover
+    display block
+    width 100%
     z-index 0     // behind of album cover
 
   .cover
@@ -161,29 +155,30 @@ body
     webkit-tap-highlight-color transparent
     user-select: none
     position absolute
-    left: 19.6%
-    top: 4.4%
-    width 364px
-    height 364px
+    left 19.4%
+    top 4.4%
+    width 61.3%
     z-index 1
-    cursor: pointer !important;
-    user-select: none;
+    cursor pointer !important;
+    user-select none;
     -webkit-tap-highlight-color: transparent;
+    &:hover
+      filter: brightness(var(--value, 5)); --value:1.05;
 
+    
   .vinyl
     webkit-tap-highlight-color: transparent;
     position absolute
-    left 120px
-    top 5.2%
-    width 353px
-    height 358px
-    // background: url("img/vinyl.png")
-    background-size: 353px 358px
-    // animation-name: vinyl-rotate, vinyl-bump
+    // left: 19.4%
+    // top: 4.4%
+    width 100%
+    height 100%
+    left 0%
     transition .2s    // off animation 
     cursor: pointer;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    
 
     &::after
       display block
@@ -198,12 +193,15 @@ body
     &.nonext
       &::after
         display none
+    &:hover
+      filter: brightness(var(--value, 5)); --value:1.8;
+
 
     .vinyl-img
-      width 353px
-      height 358px
-      background: url("img/vinyl.png")
-      background-size: 353px 358px
+      position absolute
+      top 5%
+      left 19.8%
+      width 60%
       animation vinyl-rotate 10s linear infinite
       animation-play-state paused
       user-select: none;
@@ -216,26 +214,30 @@ body
     .vinyl
       transition .4s easeOutBack  // on animation
       // animation-play-state running
-      left 300px
+      left 33%
+      +mobile()
+        left 0
+        top -32%
+        
 
   .vinyl-shadow
     position absolute
-    // left 0%
-    left 30%
+    right 5%
     opacity 0
-
+    bottom -2.5%
     display inline-block
-    width 594px
-    height 403px
-    background: url("img/vinyl-shadow.png")
-    background-size: 594px 403px
+    width 100%
+    height 100%
     z-index -1
     transition: .2s linear;
+    +mobile()
+      display none
   &.play
     .vinyl-shadow
       opacity 1
       // transform translateX(30%)
       // transition: .5s cubic-bezier(0.34, 1.56, 0.64, 1)
+  
 
 // --------------------------------
 // Animations
@@ -257,24 +259,24 @@ body
 // Covers
 // --------------------------------
 
-.volume01 .cover
-  background: url("img/cover-1.jpg")
-  background-size: 364px 364px
-.volume02 .cover
-  background: url("img/cover-2.jpg")
-  background-size: 364px 364px
-.volume03 .cover
-  background: url("img/cover-3.jpg")
-  background-size: 364px 364px
-.volume04 .cover
-  background: url("img/cover-4.jpg")
-  background-size: 364px 364px
-.volume05 .cover
-  background: url("img/cover-5.jpg")
-  background-size: 364px 364px
-.volume06 .cover
-  background: url("img/cover-6.jpg")
-  background-size: 364px 364px
+// .volume01 .cover
+//   background: url("img/cover-1.jpg")
+//   background-size: 364px 364px
+// .volume02 .cover
+//   background: url("img/cover-2.jpg")
+//   background-size: 364px 364px
+// .volume03 .cover
+//   background: url("img/cover-3.jpg")
+//   background-size: 364px 364px
+// .volume04 .cover
+//   background: url("img/cover-4.jpg")
+//   background-size: 364px 364px
+// .volume05 .cover
+//   background: url("img/cover-5.jpg")
+//   background-size: 364px 364px
+// .volume06 .cover
+//   background: url("img/cover-6.jpg")
+//   background-size: 364px 364px
 
 
 // --------------------------------
@@ -291,19 +293,29 @@ body
   margin-left 150px
   margin-right 50px
   +mobile()
-    transform scale(1.2,1.2)
-
+    position relative
+    width 100%
+    height 100%
+    margin 0 auto
+    padding 24px
+  
+  *
+    max-width 100%
 
   h2
     font-size 40px
     font-weight 700
     line-height 100%
+    +mobile()
+      font-size 32px
   
   p
     margin 24px auto
     font-size 24px
     line-height 120%
     width 450px
+    +mobile()
+      font-size 20px
 
   .mc-field-group
     position relative
