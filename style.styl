@@ -14,7 +14,6 @@ mobile()
 easeOutBack = cubic-bezier(0.34, 1.56, 0.64, 1)
 easeOutQuad = cubic-bezier(0.5, 1, 0.89, 1)
 
-
 // --------------------------------
 // Global styles
 // --------------------------------
@@ -40,24 +39,25 @@ body
 
 .logo
   display block
-  position fixed
-  left 120px
-  top 80px
-  width 292px
-  height 211px
-  background url("img/head@2x.png")
-  background-size 292px 211px
-  transition .3s easeOutQuad
+  +desktop()
+    position fixed
+    left 120px
+    top 80px
+    width 292px
+    height 211px
   
   +mobile()
     position relative
-    left 50%
-    transform translateX(-50%) scale(.8)
-    top 3%
+    top 4%
+    left auto
+    margin 0 auto
+    // left 50%
+    width 60%
+    height auto
+    // transform translateX(-50%) scale(.8)
     &.outofsight 
       opacity 0
       top 0%  
-    
 
 .note
   position absolute
@@ -72,10 +72,7 @@ body
   width 3600px
   height 100%
   z-index 1
-  +mobile()
-    position relative
-    width 100%
-    text-align center
+  
 
 .container-test
   position absolute
@@ -124,23 +121,38 @@ body
     opacity 0
     transition .3s easeOutQuad
     z-index 5
+    +mobile()
+      display inline-block
+      position relative
+      left 0
+      top 87%
+      margin 0 auto
+      
 
   &.play
     a.CTAspotify 
-      transition-delay 2s
       opacity 1
-      transform translateY(-50px)
+      +desktop()
+        transition-delay 2s
+        transform translateY(-50px)
+      +mobile()
+        transition-delay 0s
+
 
   .albumName
-    position absolute
-    display inline-block
     font-size 20px
     font-weight 700
-    top 410px
-    left: 115px;
     text-align center
     opacity 0
     transition all .4s
+    +desktop()
+      position absolute
+      display inline-block
+      bottom -41px
+      left 19.4%  
+    +mobile()
+      position relative
+      display block
   &:hover .albumName, &.play .albumName
     opacity 1
 
@@ -239,6 +251,58 @@ body
       // transition: .5s cubic-bezier(0.34, 1.56, 0.64, 1)
   
 
+
+@media (max-width: 479px)
+  
+  .album-list
+    position relative
+    width 100%
+    text-align center
+    margin-top 40%
+  .album
+    display block
+    width 100%
+    height auto
+    margin-bottom 100px
+    .vinyl
+      top 0
+
+    .cover-shadow
+      position relative
+
+    .vinyl-shadow
+      display none
+  
+    .albumName
+      opacity 1
+      // top 20px
+
+    a.CTAspotify 
+      position relative
+      display inline-block
+      left 0
+      margin 10px auto
+        
+
+    &:hover .albumName, &.play .albumName
+      position relative
+      display block
+      top 72%
+      left 0%
+      margin 0 auto
+
+    &.play
+      // margin-top 100px
+      .vinyl
+        left 0
+        top -32%
+
+      a.CTAspotify 
+        transition-delay 0s
+          
+
+
+
 // --------------------------------
 // Animations
 // --------------------------------
@@ -253,31 +317,6 @@ body
   50% {opacity: 0}
   100% {opacity: 1}
 }
-
-
-// --------------------------------
-// Covers
-// --------------------------------
-
-// .volume01 .cover
-//   background: url("img/cover-1.jpg")
-//   background-size: 364px 364px
-// .volume02 .cover
-//   background: url("img/cover-2.jpg")
-//   background-size: 364px 364px
-// .volume03 .cover
-//   background: url("img/cover-3.jpg")
-//   background-size: 364px 364px
-// .volume04 .cover
-//   background: url("img/cover-4.jpg")
-//   background-size: 364px 364px
-// .volume05 .cover
-//   background: url("img/cover-5.jpg")
-//   background-size: 364px 364px
-// .volume06 .cover
-//   background: url("img/cover-6.jpg")
-//   background-size: 364px 364px
-
 
 // --------------------------------
 // Signup form

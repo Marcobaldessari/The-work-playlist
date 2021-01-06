@@ -98,16 +98,12 @@ function playPause() {
 
 function next() {
     if (!playing) return
-    if(!nonext)
-    {
+    if (!nonext) {
         nonext = true
         for (var i = 0; i < Vinyls.length; i++) {
             Vinyls.item(i).classList.add("nonext");
         }
     }
-    var animation = new TimelineLite()
-    animation.to(this, .1, { x: -100, ease: Power1.easeOut })
-        .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
 
     clearTimeout(trackDelay)
     Crackles[randomCrackle].stop()
@@ -129,13 +125,20 @@ function next() {
         track.play()
     }
     floatingNoteAnimation()
-    var animation = new TimelineLite()
-    animation.to(this, .1, { x: -100, ease: Power1.easeOut })
-        .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
+    if (mobile) {
+        var animation = new TimelineLite()
+        animation.to(this, .1, { y: 100, ease: Power1.easeOut })
+            .to(this, .4, { y: 0, ease: Back.easeOut.config(1.7) })
+    } else {
+        var animation = new TimelineLite()
+        animation.to(this, .1, { x: -100, ease: Power1.easeOut })
+            .to(this, .4, { x: 0, ease: Back.easeOut.config(1.7) })
+    }
 }
 
 function playMusic(album) {
     playing = true
+
     playRandomCrackle()
     trackNumber = getRandomInt(volumeSize)
     track = new Howl({
@@ -193,51 +196,56 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 // floating note animation
 // --------------------------------
 
-var speed = .2
+const speed = .2
 function floatingNoteAnimation() {
-    if (!mobile) {
-        TweenMax.killTweensOf(Notes[n]);
+    TweenMax.killTweensOf(Notes[n]);
 
-        var pos = Albums[volumeNumber - 1].getBoundingClientRect()
+    var pos = Albums[volumeNumber - 1].getBoundingClientRect()
+
+    if (!mobile) {
         var startX = pos.right + (10 * Math.random()) - 120
         var startY = pos.top
-        var endX = startX + (50 * Math.random())
-        var endY = startY + (200 * Math.random()) - 200
-
-        new TimelineMax()
-            // show the image
-            .set(Notes[n], {
-                startAt: { opacity: 0, scale: 1 },
-                opacity: 1,
-                scale: 1,
-                rotation: 40 - 80 * Math.random(),
-                zIndex: 1,
-                x: startX,
-                y: startY
-            }, 0)
-            // animate position
-            .to(Notes[n], 2, {
-                ease: Expo.easeOut,
-                // ease: "power1.inOut",
-                rotation: 60 - 120 * Math.random(),
-                x: endX,
-                y: endY
-            }, 0)
-            // then make it disappear 
-            .to(Notes[n], .5, {
-                ease: Power1.easeOut,
-                opacity: 0
-            }, 1)
-            // scale down the image
-            .to(Notes[n], .5, {
-                ease: Quint.easeOut,
-                scale: 0.2
-            }, 1);
-
-        // noteTimeout = setTimeout(floatingNoteAnimation, 500)
-        n = n + 1
-        if (n >= Notes.length) { n = 0 }
+    } else {
+        var startX = pos.right + (10 * Math.random()) - 80
+        var startY = pos.top -230
     }
+    var endX = startX + (100 * Math.random())
+    var endY = startY + (150 * Math.random()) - 200
+
+    new TimelineMax()
+        // show the image
+        .set(Notes[n], {
+            startAt: { opacity: 0, scale: 1 },
+            opacity: 1,
+            scale: 1,
+            rotation: 40 - 80 * Math.random(),
+            zIndex: 1,
+            x: startX,
+            y: startY
+        }, 0)
+        // animate position
+        .to(Notes[n], 2, {
+            ease: Expo.easeOut,
+            // ease: "power1.inOut",
+            rotation: 60 - 120 * Math.random(),
+            x: endX,
+            y: endY
+        }, 0)
+        // then make it disappear 
+        .to(Notes[n], .5, {
+            ease: Power1.easeOut,
+            opacity: 0
+        }, 1)
+        // scale down the image
+        .to(Notes[n], .5, {
+            ease: Quint.easeOut,
+            scale: 0.2
+        }, 1);
+
+    // noteTimeout = setTimeout(floatingNoteAnimation, 500)
+    n = n + 1
+    if (n >= Notes.length) { n = 0 }
+
 }
 
 // --------------------------------
@@ -254,19 +262,19 @@ function logKey(e) {
 }
 
 function eventSongPLayed() {
-    gtag('event', 'custom_playMusic');
+    // gtag('event', 'custom_playMusic');
 }
 
 function eventSubscribed() {
-    gtag('event', 'custom_subscribed');
+    // gtag('event', 'custom_subscribed');
 }
 
 function eventOpenSpotify() {
-    gtag('event', 'custom_opened_Spotify_new');
+    // gtag('event', 'custom_opened_Spotify_new');
 }
 
 // --------------------------------
-// Modal -- Learn more
+// Modal -- Learn more 
 // --------------------------------
 
 // Get the modal
@@ -279,20 +287,20 @@ var btn = document.getElementById("learnmore");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
+btn.onclick = function () {
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+span.onclick = function () {
+    modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 
@@ -305,11 +313,11 @@ const logo = document.getElementById("logo");
 const emailField = document.querySelector('input[type="email"]');
 
 emailField.addEventListener('focus', (event) => {
-  logo.classList.add("outofsight");
+    logo.classList.add("outofsight");
 });
 
 emailField.addEventListener('blur', (event) => {
-  logo.classList.remove("outofsight");
+    logo.classList.remove("outofsight");
 });
 
 
