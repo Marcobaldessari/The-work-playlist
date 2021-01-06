@@ -105,6 +105,8 @@ body
     // transform scale(.8, .8)
     // width 100px
 
+  
+
   a.CTAspotify 
     text-decoration none
     display inline-block
@@ -161,6 +163,20 @@ body
     display block
     width 100%
     z-index 0     // behind of album cover
+
+
+  .comboCounter
+    font-size 28px
+    font-weight 700
+    +desktop()
+      position absolute
+      left 19.4%
+      bottom -48px
+    +mobile()
+      position relative
+    
+  .comboCounter.display
+
 
   .cover
     Cursor Pointer  

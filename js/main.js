@@ -13,7 +13,9 @@ var track,
     n = 0,
     mobile,
     mute,
-    nonext = false
+    nonext = false,
+    combo = 0,
+    comboVisible = false
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true
@@ -56,6 +58,9 @@ for (var i = 0; i < Vinyls.length; i++) {
     Vinyls.item(i).addEventListener("click", next)
 }
 var Notes = document.getElementsByClassName("note")
+
+var comboCounter = document.getElementById("comboCounter")
+
 
 var subscribeButton = document.getElementById("mc-embedded-subscribe")
 subscribeButton.addEventListener("click", eventSubscribed)
@@ -104,6 +109,15 @@ function next() {
             Vinyls.item(i).classList.add("nonext");
         }
     }
+
+    // combo ++
+    // if (!comboVisible && combo > 2) {
+    //     comboCounter.classList.remove("hidden")
+    //     var albumName = document.getElementById("albumName")
+    //     albumName.classList.add("hidden")
+    //     comboVisible = true
+    // }
+    // comboCounter.innerHTML = "Combo: " + combo
 
     clearTimeout(trackDelay)
     Crackles[randomCrackle].stop()
@@ -201,16 +215,38 @@ function floatingNoteAnimation() {
     TweenMax.killTweensOf(Notes[n]);
 
     var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-
-    if (!mobile) {
-        var startX = pos.right + (10 * Math.random()) - 120
-        var startY = pos.top
+if (mobile) {
+        if(Math.random() > .5) {
+            // shoot a note on the right
+            var startX = pos.right + (10 * Math.random()) - 120
+            var startY = pos.top - 220
+            var endX = startX + (100 * Math.random())
+            var endY = startY + (150 * Math.random()) - 200
+        } else {
+            // shoot a note on the left
+            var startX = pos.left - (10 * Math.random()) + 120
+            var startY = pos.top - 220
+            var endX = startX - (100 * Math.random())
+            var endY = startY + (150 * Math.random()) - 200
+        }
     } else {
         var startX = pos.right + (10 * Math.random()) - 80
-        var startY = pos.top -230
+        var startY = pos.top
+        var endX = startX + (100 * Math.random())
+        var endY = startY + (150 * Math.random()) - 200
+        
     }
-    var endX = startX + (100 * Math.random())
-    var endY = startY + (150 * Math.random()) - 200
+    
+
+    // if (!mobile) {
+    //     var startX = pos.right + (10 * Math.random()) - 120
+    //     var startY = pos.top
+    // } else {
+    //     var startX = pos.right + (10 * Math.random()) - 80
+    //     var startY = pos.top -230
+    // }
+    // var endX = startX + (100 * Math.random())
+    // var endY = startY + (150 * Math.random()) - 200
 
     new TimelineMax()
         // show the image
@@ -262,15 +298,15 @@ function logKey(e) {
 }
 
 function eventSongPLayed() {
-    // gtag('event', 'custom_playMusic');
+    gtag('event', 'custom_playMusic');
 }
 
 function eventSubscribed() {
-    // gtag('event', 'custom_subscribed');
+    gtag('event', 'custom_subscribed');
 }
 
 function eventOpenSpotify() {
-    // gtag('event', 'custom_opened_Spotify_new');
+    gtag('event', 'custom_opened_Spotify_new');
 }
 
 // --------------------------------
