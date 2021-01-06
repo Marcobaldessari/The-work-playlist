@@ -185,6 +185,7 @@ body {
 .album .comboCounter {
   font-size: 28px;
   font-weight: 700;
+  font-variant: small-caps;
 }
 @media (min-width: 480px) {
   .album .comboCounter {
@@ -196,6 +197,7 @@ body {
 @media (max-width: 479px) {
   .album .comboCounter {
     position: relative;
+    display: block;
   }
 }
 .album .comboCounter.display,

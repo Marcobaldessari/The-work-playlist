@@ -15,7 +15,12 @@ var track,
     mute,
     nonext = false,
     combo = 0,
-    comboVisible = false
+    comboVisible = false,
+    comboCurrentSize = 1,
+    comboNextSize = 1.1,
+    comboBumpSize = 1.2,
+    comboSizeMultiplier = 1,
+    comboTimer
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true
@@ -89,10 +94,11 @@ function playPause() {
         if (volumeNumber == album.getAttribute('volume')) {  // if user is interacting with the same album
             clearTimeout(noteTimeout)
             stopMusic()
+            comboEnd()
 
         } else {                // if user is playing another album
             stopMusic()
-
+            comboEnd()
             Albums.item(volumeNumber - 1).classList.toggle("play")
             volumeNumber = album.getAttribute('volume')
             floatingNoteAnimation()
@@ -110,14 +116,8 @@ function next() {
         }
     }
 
-    // combo ++
-    // if (!comboVisible && combo > 2) {
-    //     comboCounter.classList.remove("hidden")
-    //     var albumName = document.getElementById("albumName")
-    //     albumName.classList.add("hidden")
-    //     comboVisible = true
-    // }
-    // comboCounter.innerHTML = "Combo: " + combo
+    comboManager()
+    comboAnimation()
 
     clearTimeout(trackDelay)
     Crackles[randomCrackle].stop()
@@ -185,6 +185,39 @@ function playRandomCrackle() {
     Crackles[randomCrackle].play()
 }
 
+
+function comboManager() {
+    combo++
+    if (!comboVisible && combo > 5) {
+        comboCounter = album.querySelector("#comboCounter")
+        albumName = album.querySelector("#albumName")
+        comboCounter.classList.remove("hidden")
+        albumName.classList.add("hidden")
+        comboVisible = true
+    }
+    comboCounter.innerHTML = "combo" + combo
+
+    if (comboTimer) { clearTimeout(comboTimer) }
+    comboTimer = setTimeout(comboEnd, 2000);
+}
+
+function comboAnimation() {
+    comboSizeMultiplier = comboSizeMultiplier + .02
+    var comboBump = new TimelineLite()
+    comboBump.to(comboCounter, .05, { css: { scaleX: 1.2 * comboSizeMultiplier, scaleY: 1.2 * comboSizeMultiplier, rotation: Math.random() * 20 - 10},   ease: Power1.easeOut })
+        .to(comboCounter, .7, { css: { scaleX: 1 * comboSizeMultiplier, scaleY: 1 * comboSizeMultiplier , rotation: 0}, ease: Back.easeOut.config(1.7) })
+        .to(comboCounter, 10, { css: { scaleX: .5 * comboSizeMultiplier, scaleY: .5 * comboSizeMultiplier }, ease: Back.easeOut.config(1.7) })
+}
+
+function comboEnd() {
+    combo = 0
+    comboSizeMultiplier = 1
+    comboCounter.classList.add("hidden")
+    albumName.classList.remove("hidden")
+    comboVisible = false
+}
+
+
 function getRandomInt(max) {                // random int between 1 and max included
     return Math.floor(Math.random() * Math.floor(max) + 1)
 }
@@ -204,8 +237,6 @@ const scroll = new LocomotiveScroll({       // Enable locomotive scroll
 });
 
 
-
-
 // --------------------------------
 // floating note animation
 // --------------------------------
@@ -215,8 +246,8 @@ function floatingNoteAnimation() {
     TweenMax.killTweensOf(Notes[n]);
 
     var pos = Albums[volumeNumber - 1].getBoundingClientRect()
-if (mobile) {
-        if(Math.random() > .5) {
+    if (mobile) {
+        if (Math.random() > .5) {
             // shoot a note on the right
             var startX = pos.right + (10 * Math.random()) - 120
             var startY = pos.top - 220
@@ -234,9 +265,9 @@ if (mobile) {
         var startY = pos.top
         var endX = startX + (100 * Math.random())
         var endY = startY + (150 * Math.random()) - 200
-        
+
     }
-    
+
 
     // if (!mobile) {
     //     var startX = pos.right + (10 * Math.random()) - 120
