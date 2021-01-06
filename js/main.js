@@ -298,15 +298,15 @@ function logKey(e) {
 }
 
 function eventSongPLayed() {
-    gtag('event', 'custom_playMusic');
+    // gtag('event', 'custom_playMusic');
 }
 
 function eventSubscribed() {
-    gtag('event', 'custom_subscribed');
+    // gtag('event', 'custom_subscribed');
 }
 
 function eventOpenSpotify() {
-    gtag('event', 'custom_opened_Spotify_new');
+    // gtag('event', 'custom_opened_Spotify_new');
 }
 
 // --------------------------------
