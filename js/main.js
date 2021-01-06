@@ -309,6 +309,7 @@ function eventOpenSpotify() {
     // gtag('event', 'custom_opened_Spotify_new');
 }
 
+
 // --------------------------------
 // Modal -- Learn more 
 // --------------------------------
