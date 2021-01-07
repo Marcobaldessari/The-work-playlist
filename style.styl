@@ -68,6 +68,7 @@ img.note
   
 .madTalks
   font-size 22px
+  font-weight 700
   position absolute
   opacity 0
   z-index -2
@@ -218,11 +219,14 @@ img.note
       // width 40px
     // +mobile()
     .next-triangle
-      width 30%
-      display inline-block
-      margin-right -10%
-
-
+      +desktop()
+        width 30%
+        display inline-block
+        margin-right -10%
+      +mobile()
+        width 23%
+        display inline-block
+        margin-right -10%
 
     
   .vinyl

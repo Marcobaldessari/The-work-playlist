@@ -55,6 +55,7 @@ img.note {
 }
 .madTalks {
   font-size: 22px;
+  font-weight: 700;
   position: absolute;
   opacity: 0;
   z-index: -2;
@@ -245,10 +246,19 @@ img.note {
     top: 13%;
   }
 }
-.album .nextButton .next-triangle {
-  width: 30%;
-  display: inline-block;
-  margin-right: -10%;
+@media (min-width: 480px) {
+  .album .nextButton .next-triangle {
+    width: 30%;
+    display: inline-block;
+    margin-right: -10%;
+  }
+}
+@media (max-width: 479px) {
+  .album .nextButton .next-triangle {
+    width: 23%;
+    display: inline-block;
+    margin-right: -10%;
+  }
 }
 .album .vinyl {
   webkit-tap-highlight-color: transparent;
