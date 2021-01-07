@@ -46,11 +46,17 @@ body {
     top: 0%;
   }
 }
-.note {
+img.note {
   position: absolute;
   opacity: 0;
   width: 32px;
   height: 32px;
+  z-index: -2;
+}
+.madTalks {
+  font-size: 22px;
+  position: absolute;
+  opacity: 0;
   z-index: -2;
 }
 .album-list {
@@ -103,10 +109,6 @@ body {
 }
 .album a.CTAspotify {
   text-decoration: none;
-  display: inline-block;
-  position: absolute;
-  right: 114px;
-  top: 456px;
   color: #fff;
   background: #000;
   font-size: 20px;
@@ -119,6 +121,14 @@ body {
   -o-transition: 0.3s cubic-bezier(0.5, 1, 0.89, 1);
   transition: 0.3s cubic-bezier(0.5, 1, 0.89, 1);
   z-index: 5;
+}
+@media (min-width: 480px) {
+  .album a.CTAspotify {
+    position: absolute;
+    display: inline-block;
+    bottom: -44px;
+    right: 19.4%;
+  }
 }
 @media (max-width: 479px) {
   .album a.CTAspotify {
@@ -202,7 +212,7 @@ body {
   left: 19.4%;
   top: 4.4%;
   width: 61.3%;
-  z-index: 1;
+  z-index: 3;
   cursor: pointer !important;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -212,6 +222,33 @@ body {
   -webkit-filter: brightness(var(--value, 5));
   filter: brightness(var(--value, 5));
   --value: 1.05;
+}
+.album .nextButton {
+  display: inline-block;
+  z-index: 2;
+  opacity: 0.8;
+}
+.album .nextButton.nonext {
+  display: none;
+}
+@media (min-width: 480px) {
+  .album .nextButton {
+    position: absolute;
+    right: 22%;
+    top: 47%;
+  }
+}
+@media (max-width: 479px) {
+  .album .nextButton {
+    position: absolute;
+    left: 41%;
+    top: 13%;
+  }
+}
+.album .nextButton .next-triangle {
+  width: 30%;
+  display: inline-block;
+  margin-right: -10%;
 }
 .album .vinyl {
   webkit-tap-highlight-color: transparent;
@@ -240,9 +277,6 @@ body {
   font-weight: 700;
   -webkit-animation: pulse 6s ease-out alternate infinite;
   animation: pulse 6s ease-out alternate infinite;
-}
-.album .vinyl.nonext::after {
-  display: none;
 }
 .album .vinyl:hover {
   -webkit-filter: brightness(var(--value, 5));

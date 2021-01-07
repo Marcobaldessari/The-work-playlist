@@ -20,7 +20,8 @@ var track,
     comboNextSize = 1.1,
     comboBumpSize = 1.2,
     comboSizeMultiplier = 1,
-    comboTimer
+    comboTimer,
+    songsSkipped = 0
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     mobile = true
@@ -63,7 +64,7 @@ for (var i = 0; i < Vinyls.length; i++) {
     Vinyls.item(i).addEventListener("click", next)
 }
 var Notes = document.getElementsByClassName("note")
-
+var MadTalks = document.getElementsByClassName("madTalks")
 var comboCounter = document.getElementById("comboCounter")
 
 
@@ -109,11 +110,14 @@ function playPause() {
 
 function next() {
     if (!playing) return
-    if (!nonext) {
+
+    songsSkipped ++
+    if ( !nonext && songsSkipped >= 3 ) {
         nonext = true
-        for (var i = 0; i < Vinyls.length; i++) {
-            Vinyls.item(i).classList.add("nonext");
-        }
+        var NextButtons = document.getElementsByClassName("nextButton")
+        Array.prototype.forEach.call(NextButtons, function(el) {
+            el.classList.add("nonext");
+        });
     }
 
     comboManager()

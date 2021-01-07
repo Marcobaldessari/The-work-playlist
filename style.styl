@@ -59,13 +59,18 @@ body
       opacity 0
       top 0%  
 
-.note
+img.note
   position absolute
   opacity 0
   width 32px
   height 32px
   z-index -2
   
+.madTalks
+  font-size 22px
+  position absolute
+  opacity 0
+  z-index -2
 
 .album-list
   position: absolute;
@@ -109,10 +114,6 @@ body
 
   a.CTAspotify 
     text-decoration none
-    display inline-block
-    position absolute
-    right 114px
-    top 456px
     color white
     background #000
     font-size 20px
@@ -123,6 +124,11 @@ body
     opacity 0
     transition .3s easeOutQuad
     z-index 5
+    +desktop()
+      position absolute
+      display inline-block
+      bottom -44px
+      right 19.4%  
     +mobile()
       display inline-block
       position relative
@@ -188,12 +194,35 @@ body
     left 19.4%
     top 4.4%
     width 61.3%
-    z-index 1
+    z-index 3
     cursor pointer !important;
     user-select none;
     -webkit-tap-highlight-color: transparent;
     &:hover
       filter: brightness(var(--value, 5)); --value:1.05;
+
+  .nextButton
+    display inline-block
+    z-index 2
+    opacity .8
+    &.nonext
+      display none
+    +desktop()
+      position absolute
+      right 22%
+      top 47%
+    +mobile()
+      position absolute
+      left 41%
+      top 13%
+      // width 40px
+    // +mobile()
+    .next-triangle
+      width 30%
+      display inline-block
+      margin-right -10%
+
+
 
     
   .vinyl
@@ -220,9 +249,7 @@ body
       font-size 18px
       font-weight 700
       animation pulse 6s ease-out alternate infinite
-    &.nonext
-      &::after
-        display none
+
     &:hover
       filter: brightness(var(--value, 5)); --value:1.8;
 
