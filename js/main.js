@@ -204,17 +204,19 @@ function comboManager() {
 function comboAnimation() {
     comboSizeMultiplier = comboSizeMultiplier + .02
     var comboBump = new TimelineLite()
-    comboBump.to(comboCounter, .05, { css: { scaleX: 1.2 * comboSizeMultiplier, scaleY: 1.2 * comboSizeMultiplier, rotation: Math.random() * 20 - 10},   ease: Power1.easeOut })
-        .to(comboCounter, .7, { css: { scaleX: 1 * comboSizeMultiplier, scaleY: 1 * comboSizeMultiplier , rotation: 0}, ease: Back.easeOut.config(1.7) })
+    comboBump.to(comboCounter, .05, { css: { scaleX: 1.2 * comboSizeMultiplier, scaleY: 1.2 * comboSizeMultiplier, rotation: Math.random() * 20 - 10 }, ease: Power1.easeOut })
+        .to(comboCounter, .7, { css: { scaleX: 1 * comboSizeMultiplier, scaleY: 1 * comboSizeMultiplier, rotation: 0 }, ease: Back.easeOut.config(1.7) })
         .to(comboCounter, 10, { css: { scaleX: .5 * comboSizeMultiplier, scaleY: .5 * comboSizeMultiplier }, ease: Back.easeOut.config(1.7) })
 }
 
 function comboEnd() {
-    combo = 0
-    comboSizeMultiplier = 1
-    comboCounter.classList.add("hidden")
-    albumName.classList.remove("hidden")
-    comboVisible = false
+    if (comboVisible) {
+        combo = 0
+        comboSizeMultiplier = 1
+        comboCounter.classList.add("hidden")
+        albumName.classList.remove("hidden")
+        comboVisible = false
+    }
 }
 
 

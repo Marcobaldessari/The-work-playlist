@@ -132,16 +132,6 @@ body {
 .album.play a.CTAspotify {
   opacity: 1;
 }
-@media (min-width: 480px) {
-  .album.play a.CTAspotify {
-    -webkit-transition-delay: 2s;
-    -o-transition-delay: 2s;
-    transition-delay: 2s;
-    -webkit-transform: translateY(-50px);
-    -ms-transform: translateY(-50px);
-    transform: translateY(-50px);
-  }
-}
 @media (max-width: 479px) {
   .album.play a.CTAspotify {
     -webkit-transition-delay: 0s;
