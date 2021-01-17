@@ -13,6 +13,7 @@ mobile()
 
 easeOutBack = cubic-bezier(0.34, 1.56, 0.64, 1)
 easeOutQuad = cubic-bezier(0.5, 1, 0.89, 1)
+easeInOutSine = cubic-bezier(0.37, 0, 0.63, 1)
 
 // --------------------------------
 // Global styles
@@ -188,7 +189,7 @@ img.note
 
 
   .cover
-    Cursor Pointer  
+    Cursor Pointer   
     webkit-tap-highlight-color transparent
     user-select: none
     position absolute
@@ -219,6 +220,10 @@ img.note
       // width 40px
     // +mobile()
     .next-triangle
+      animation: fadeInOut 1.5s  infinite easeInOutSine;
+      &:first-of-type
+        animation-delay: -.3s;
+
       +desktop()
         width 30%
         display inline-block
@@ -298,7 +303,12 @@ img.note
       opacity 1
       // transform translateX(30%)
       // transition: .5s cubic-bezier(0.34, 1.56, 0.64, 1)
-  
+
+@keyframes fadeInOut { 
+  0%   { opacity:.8; }
+  50%  { opacity:.3; }
+  100% { opacity:.8; }
+}
 
 
 @media (max-width: 479px)

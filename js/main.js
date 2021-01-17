@@ -112,7 +112,7 @@ function next() {
     if (!playing) return
 
     songsSkipped ++
-    if ( !nonext && songsSkipped >= 3 ) {
+    if ( !nonext && songsSkipped >= 2 ) {
         nonext = true
         var NextButtons = document.getElementsByClassName("nextButton")
         Array.prototype.forEach.call(NextButtons, function(el) {
